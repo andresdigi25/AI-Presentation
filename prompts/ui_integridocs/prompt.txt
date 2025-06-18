@@ -1,0 +1,9 @@
+I want a version of integridocs but using svelte, replicate the same funcionality
+
+please use vite to create the project, be simpler as posible
+
+no need to use tailwindcss for now, use only css
+no need to use markdown rederer feature, we can show the result in a textarea
+no need to use Typescript
+
+npm create vite@latest
