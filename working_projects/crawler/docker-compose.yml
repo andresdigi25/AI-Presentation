@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  go:
+    build: ./go
+    environment:
+      - CRAWL_URLS
+    volumes:
+      - ./output:/app/output
+      - ./.env:/app/.env
+
+  python:
+    build: ./python
+    environment:
+      - CRAWL_URLS
+    volumes:
+      - ./output:/app/output
+      - ./.env:/app/.env
+
+  nodejs:
+    build: ./nodejs
+    environment:
+      - CRAWL_URLS
+    volumes:
+      - ./output:/app/output
+      - ./.env:/app/.env

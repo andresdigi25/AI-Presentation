@@ -1,0 +1,50 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/graphql"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    command: >
+      sh -c "mkdir -p /app/data && 
+             chmod 777 /app/data &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  sync-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests
+    command: python sync_test.py
+    volumes:
+      - ./stats:/app/stats
+    networks:
+      - app-network
+    depends_on:
+      api:
+        condition: service_healthy
+
+  async-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests
+    command: python async_test.py
+    volumes:
+      - ./stats:/app/stats
+    networks:
+      - app-network
+    depends_on:
+      api:
+        condition: service_healthy
+
+networks:
+  app-network:
+    driver: bridge 

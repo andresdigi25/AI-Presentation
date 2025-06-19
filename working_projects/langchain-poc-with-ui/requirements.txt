@@ -1,0 +1,10 @@
+numpy==1.26.4
+langchain==0.1.12
+langchain-community>=0.0.28
+beautifulsoup4==4.12.3
+requests==2.31.0
+python-dotenv==1.0.1
+newspaper3k==0.2.8
+lxml
+lxml_html_clean
+streamlit==1.32.2 

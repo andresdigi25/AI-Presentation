@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+marshmallow
+marshmallow-jsonschema
+ollama
+python-multipart
