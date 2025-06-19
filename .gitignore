@@ -345,13 +345,8 @@ working_projects/puppeteer-performance/performance-results/
 # Scrum master standups
 working_projects/scrum-o-master-3000/standups/
 
-# Raycasting assets
-working_projects/raycasting-python-poc/*.png
-working_projects/raycasting-python-poc/*.gif
 
-# FastAPI assets
-working_projects/fastapi-ollama/*.png
-working_projects/fastapi-ollama/*.webp
+
 
 # Scrum master assets
 working_projects/scrum-o-master-3000/assets/ 
