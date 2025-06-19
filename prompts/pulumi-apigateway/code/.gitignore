@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+
+# Pulumi
+*.bak
+*.log
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db 

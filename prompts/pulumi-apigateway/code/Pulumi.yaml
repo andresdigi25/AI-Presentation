@@ -1,0 +1,7 @@
+name: cursor-demo-pulumi
+runtime: python
+description: AWS API Gateway REST API with a ping-pong endpoint
+backend:
+  url: 
+config:
+  aws:region: us-east-1 
