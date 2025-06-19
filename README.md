@@ -3,7 +3,7 @@
 - ✅ Learning AI doesn’t replace your skills — it amplifies them.
 - ✅ The real barrier is mindset, not ability.
 - ✅ Developers who master AI become 10x developers, not obsolete ones.
-- 🔥 AI won’t do your job for you. It will make you 10x better at it. Use it — or be left behind.
+- 🔥 AI won’t do your job for you. It will make you [YOUR MULTIPLIER]x better at it. Use it — or be left behind.
 
 ⸻
 
