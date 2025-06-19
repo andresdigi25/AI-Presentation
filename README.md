@@ -134,6 +134,38 @@ Memory lets an AI keep track of **past conversations or context**. Without it, e
 - **Customer Support**: Route and respond to inquiries automatically
 - **Monitoring**: AI-powered alerting and anomaly detection
 
+**Worflow Examples:**
+![Description](assets/talk-to-your-docs-local.png)
+![Description](assets/talk-to-your-docs-remote.png)
+
+### 🖧 **MCP Servers: Model Control Protocol**
+
+**Model Control Protocol (MCP) servers** are specialized systems designed to standardize, manage, and automate the control of AI/ML models across distributed environments. MCP provides a unified protocol for interacting with models, regardless of their framework, deployment location, or runtime.
+
+**What MCP Servers Do:**
+- **Standardize Model Access:** Provide a consistent API for inference, training, and management across different model types and frameworks.
+- **Centralized Control:** Manage model versions, deployments, and lifecycles from a single interface.
+- **Automation:** Enable automated workflows for model retraining, evaluation, and deployment.
+- **Integration:** Easily connect with CI/CD, monitoring, and project management tools (like Jira).
+
+**Advantages:**
+- **Interoperability:** Work with models from different frameworks (e.g., TensorFlow, PyTorch, scikit-learn) using a single protocol.
+- **Scalability:** Deploy and manage models across cloud, on-prem, or hybrid environments.
+- **Auditability:** Track model usage, changes, and performance for compliance and debugging.
+- **Productivity:** Reduce manual work and errors by automating model operations and integrations.
+
+**Example Integrations:**
+- Automate ticket creation or status updates in Jira based on model events.
+- Trigger model retraining or deployment from code commits or data changes.
+
+**MCP Server in Action:**
+
+![MCP Server Jira Integration](assets/mcp-server-jira.png)
+![MCP Server Jira Workflow](assets/mcp-server-jira2.png)
+
+
+
+
 ---
 
 ### 🌍 **6️⃣ Foundational Models & Fine-tuning**
@@ -239,8 +271,7 @@ This is a real example of how AI accelerates development — so you spend less t
    - Refactor as needed
 
 **Getting Started with Cursor:**
-- **Chat with AI**: Press `Cmd/Ctrl + K` to open the AI chat
-- **Generate Code**: Use `Cmd/Ctrl + L` for inline code generation
+- **Chat with AI**: Press `Option/Command + B` to open the AI chat
 - **Explain Code**: Select code and ask "explain this"
 - **Fix Issues**: Ask AI to debug errors or improve code
 
