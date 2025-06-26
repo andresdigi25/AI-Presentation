@@ -419,6 +419,6 @@ Generate documentation for [project/component] including:
    - Deployment documentation
 
 Scrum-O-Master
-Based on the projects inside the working_projects folder, could you add a README for each of them
-can we create a new script in the working_projects/scrum_master , using the same libraries we are using in the scrum_master.py and poc1.py that voice the phrase that in have in the readme about limits and fears,
+- Based on the projects inside the working_projects folder, could you add a README into the workink folder explaining or summarizing  each of the projects
+- can we create a new script in the working_projects/scrum_master , using the same libraries we are using in the scrum_master.py and poc1.py that voice the phrase that in have in the readme.md in the root folder about limits and fears
 using a strong male voice
