@@ -1,0 +1,53 @@
+name: ia-docs
+
+services:
+  n8n:
+    image: n8nio/n8n
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      - N8N_LOG_LEVEL=debug
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - ai-docs-report
+
+  n8n-setup:
+    image: python:3.13-alpine
+    platform: linux/amd64
+    entrypoint: ["/bin/sh", "-c", "pip install httpx backoff && python /tmp/n8n-setup.py"]
+    environment:
+      - N8N_URL=http://n8n:5678
+      - N8N_EMAIL=${N8N_EMAIL}
+      - N8N_PASSWORD=${N8N_PASSWORD}
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
+    volumes:
+      - ./n8n-setup.py:/tmp/n8n-setup.py:ro
+      - ./workflows:/tmp/workflows
+    depends_on:
+      - n8n
+    networks:
+      - ai-docs-report
+
+  nextjs-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - ai-docs-report
+
+volumes:
+  n8n_data:
+
+networks:
+  ai-docs-report:

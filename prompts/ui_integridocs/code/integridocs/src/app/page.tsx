@@ -15,7 +15,7 @@ export default function Home() {
     setShowResults(false);
     try {
       setSearching(true);
-      const res = await fetch("http://localhost:5678/webhook-test/doc-agent", {
+      const res = await fetch("http://localhost:5678/webhook/doc-agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ searchText }),

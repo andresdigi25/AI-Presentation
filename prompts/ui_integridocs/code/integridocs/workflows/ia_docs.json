@@ -1,0 +1,222 @@
+{
+  "name": "ia docs",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "id": "e6fd17b1-a0fa-4fe8-ae26-7dc56a299dcb",
+      "name": "Fetch HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  let html = item.json.data || \"\";\n  // Remove <script> and <style> tags + content\n  html = html.replace(/<script[\\s\\S]*?<\\/script>/gi, '');\n  html = html.replace(/<style[\\s\\S]*?<\\/style>/gi, '');\n\n  // Remove CSS variable declarations like --something: value;\n  html = html.replace(/--[\\w-]+:\\s*[^;]+;/g, '');\n\n  // Remove all remaining HTML tags\n  html = html.replace(/<[^>]*>/g, '');\n\n  // Clean up special characters and extra whitespace\n  html = html.replace(/[‌»«]/g, ' ').replace(/\\s+/g, ' ').trim();\n  return { json: { text: html } };\n});"
+      },
+      "id": "633268c4-ae56-4eef-aee7-818a40767ba9",
+      "name": "Extract Text",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const texts = items.map(i => i.json.text).join('\\n');\nconst question = $node[\"input1\"].json.body.searchText.toLowerCase()\nreturn [{ json: { prompt: `Based on the following documentation, answer this question: \"${question}\" ${texts}` } }];"
+      },
+      "id": "c33a0ffb-f7cd-4eee-85c3-20f2d57632bc",
+      "name": "Build Prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant\n\nBased on a text documentation you answer questions related with that topic\nYou can not respond general question, you should only use the text that is on the context"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        340
+      ],
+      "id": "ef204b21-2be3-4a72-ab22-20c04475970e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1880,
+        560
+      ],
+      "id": "ff803f36-5e5d-4f1d-9c8f-39ac0abb963c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "y9PgqSTTobNQ4FYW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "doc-agent",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "6d0d5f70-0d96-4f60-8da7-d95be4e1ff24",
+      "name": "input1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        740,
+        340
+      ],
+      "webhookId": "473654f6-253a-4ba5-85f6-20d0e757f91a"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $workflow.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        2040,
+        560
+      ],
+      "id": "9847c010-17f4-4d7e-9e17-c796cb2b22d1",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "const userQuery = $node[\"input1\"].json.body.searchText.toLowerCase()\n\nconst allUrls = [\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/guides/explanation/', tags: [] },\n  \n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/guides/jmeter/guide/', tags: ['jmeter', 'load testing'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/jmeter/tutorial/', tags: ['jmeter', 'load testing'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/jmeter/tutorial_qa_tools/', tags: ['jmeter', 'load testing'] },\n  \n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/guides/playwright/guide/', tags: ['playwright', 'e2e testing'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/playwright/tutorial/', tags: ['playwright', 'e2e testing'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/playwright/tutorial_qa_tools/', tags: ['playwright', 'e2e testing'] },\n\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/guides/postman/guide/', tags: ['postman'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/postman/tutorial/', tags: ['postman'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/postman/tutorial_qa_tools/', tags: ['postman'] },\n\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/guides/selenium/guide/', tags: ['selenium'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/selenium/tutorial/', tags: ['selenium'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/selenium/tutorial_qa_tools/', tags: ['selenium'] },\n\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/guides/sitespeed/guide/', tags: ['sitespeed'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/sitespeed/tutorial/', tags: ['sitespeed'] },\n  { url: 'https://xwyiatry5y.us-east-1.awsapprunner.com/tutorials/sitespeed/tutorial_qa_tools/', tags: ['sitespeed'] },\n\n];\n\n// Filter URLs matching any tag in the query\nlet filteredUrls = allUrls.filter(item => \n  item.tags.some(tag => userQuery.includes(tag.toLowerCase())) || item.tags.length === 0\n);\n\nif(filteredUrls.length === 0){\n  filteredUrls = [allUrls[0]]\n}\n\nreturn filteredUrls.map(item => ({ json: { url: item.url } }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        340
+      ],
+      "id": "00f35299-5cec-409b-9951-af9c598947e7",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Fetch HTML": {
+      "main": [
+        [
+          {
+            "node": "Extract Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text": {
+      "main": [
+        [
+          {
+            "node": "Build Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "input1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Fetch HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2c522ffa-abdf-4f4d-8e82-f3732497d0e8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "852d3be8260474b909d35d2e4ef2d7142d2abc97d6b534472ca9be6638ec0ee2"
+  },
+  "id": "Tsk34RjqR75Ojsgc",
+  "tags": []
+}
