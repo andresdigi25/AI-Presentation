@@ -14,7 +14,7 @@
 2. Run docker compose command
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 3. Open n8n [http://127.0.0.1:5678/](http://127.0.0.1:5678/)
